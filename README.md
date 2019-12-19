@@ -8,31 +8,6 @@ Jackson-databind进行Json数据传输的时候,或是是基于REST服务提供�
 
 # Get it!
 
-## Maven
-
-
-```xml
-<properties>
-  ...
-  <!-- Use the latest version whenever possible. -->
-  <jackson.version>2.10.0</jackson.version>
-  ...
-</properties>
-
-<dependencies>
-  ...
-  <dependency>
-    <groupId>com.jackson.ext</groupId>
-    <artifactId>jackson-ext-beanInstantiation</artifactId>
-    <version>${jackson.version}</version>
-  </dependency>
-  ...
-</dependencies>
-```
-
-
-
-# Get it!
 
 ## Maven
 
@@ -63,7 +38,7 @@ Jackson-databind进行Json数据传输的时候,或是是基于REST服务提供�
 
 
 
-## 1 minute tutorial: POJOs to JSON and back
+## 1 minute tutorial: 
 
 
 
@@ -71,15 +46,6 @@ Jackson-databind进行Json数据传输的时候,或是是基于REST服务提供�
 
 
 
-
-
------
-
-
-
-## Support
-
-### Community support
 
 
 
