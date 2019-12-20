@@ -114,6 +114,59 @@ public class MyBeanDeserializerModifier  extends BeanDeserializerModifier {
 }
 ```
 
+## 测试示例
+
+```json
+{
+	"@class": "com.jackson.ext.test.vo.MockBizDataContext",
+	"bizDataMap": {
+		"@class": "java.util.HashMap",
+		"{\"@class\":\"java.lang.String\",\"value\":\"MockPojoWithNonDefaultConstructorList\"}": ["java.util.ArrayList", [{
+			"@class": "com.jackson.ext.test.vo.MockPojoWithNonDefaultConstructor",
+			"poiId": 123,
+			"comment": "test1",
+			"userName": "yilami1",
+			"phone": "11111111"
+		}, {
+			"@class": "com.jackson.ext.test.vo.MockPojoWithNonDefaultConstructor",
+			"poiId": 234,
+			"comment": "test2",
+			"userName": "yilami2",
+			"phone": "22222222"
+		}]],
+		"{\"@class\":\"java.lang.String\",\"value\":\"MockPojoWithNonStaticInnerPojo_Outer\"}": {
+			"@class": "com.jackson.ext.test.vo.MockPojoWithNonStaticInnerPojo_Outer",
+			"outerName": "Outer[1]",
+			"mockPojoWithNonStaticInnerPojo_inner": {
+				"@class": "com.jackson.ext.test.vo.MockPojoWithNonStaticInnerPojo_Outer$MockPojoWithNonStaticInnerPojo_Inner",
+				"innerName": "Inner[1]"
+			}
+		},
+		"{\"@class\":\"java.lang.String\",\"value\":\"createTime\"}": ["java.util.Date", 1576838321729],
+		"{\"@class\":\"java.lang.String\",\"value\":\"MockPojoWithNonDefaultConstructor1\"}": {
+			"@class": "com.jackson.ext.test.vo.MockPojoWithNonDefaultConstructor",
+			"poiId": 123,
+			"comment": "test1",
+			"userName": "yilami1",
+			"phone": "11111111"
+		},
+		"{\"@class\":\"java.lang.String\",\"value\":\"MockPojoWithNonDefaultConstructor2\"}": {
+			"@class": "com.jackson.ext.test.vo.MockPojoWithNonDefaultConstructor",
+			"poiId": 234,
+			"comment": "test2",
+			"userName": "yilami2",
+			"phone": "22222222"
+		},
+		"{\"@class\":\"java.lang.String\",\"value\":\"MockEnumWithNonDefaultCreator\"}": ["com.jackson.ext.test.Enum.MockEnumWithNonDefaultCreator", "NO"],
+		"{\"@class\":\"java.lang.String\",\"value\":\"MockPojoWithNonStaticInnerPojo_Inner\"}": {
+			"@class": "java.lang.Object",
+			"innerName": "Inner[1]"
+		}
+	}
+}
+
+```
+
 ## Maven
 
 
@@ -136,19 +189,10 @@ public class MyBeanDeserializerModifier  extends BeanDeserializerModifier {
 </dependencies>
 ```
 
-
-
 -----
 
-# Use It!
+# 如何使用!
 
-
-
-## 1 minute tutorial: 
-
-
-
-## Tutorial:
 
 
 
