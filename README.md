@@ -1,8 +1,9 @@
 # Overview
 
-Java生态圈中有很多处理JSON和XML格式化的类库,Jackson是其中比较著名的一个
-        官址:https://github.com/FasterXML
-Jackson提供了Jackson-databind来操控JSON处理,提供了比较丰富的API,和入门指南 https://github.com/FasterXML/jackson-databind
+Java生态圈中有很多处理JSON和XML格式化的类库,Jackson是其中比较著名的一个<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;官址:https://github.com/FasterXML<br>
+Jackson提供了Jackson-databind来操控JSON处理,提供了比较丰富的API,和入门指南<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;文档:https://github.com/FasterXML/jackson-databind <br>
 JAVA是一种灵活性,扩展性比较强的语言,继承,实现,范型,多态等都是很好的体现,Jackson-databind作为JAVA生态圈的类库,当然会对这些特性有对应的实现,具体可以在官方指导文档中,或者是在指导测试中找到相关的介绍。
 
 -----
