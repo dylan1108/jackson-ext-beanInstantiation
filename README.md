@@ -192,7 +192,7 @@ public class MyBeanDeserializerModifier  extends BeanDeserializerModifier {
 -----
 
 # 如何使用!
-
+使用Maven编译和打包jackson-ext-beanInstantiation之后，使用Jackson_Enhance_Utils会提供想对应的序列化和反序列化接口即可
 
 
 
