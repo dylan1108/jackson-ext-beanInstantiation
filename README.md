@@ -8,6 +8,7 @@ JAVA是一种灵活性,扩展性比较强的语言,继承,实现,范型,多态�
 -----
 
 # 问题
+
 ## Bean多态反序列化
 你会发现官方给出的基本上都是基于单个Bean的,或者是某一类型的定制方案。官方暂未提供通用的解决方案,
 ## 默认Bean反序列化约束
@@ -20,7 +21,8 @@ JAVA是一种灵活性,扩展性比较强的语言,继承,实现,范型,多态�
 Bean序列化时,对于含有多态类型的引用,将此引用的具体实例对象类的信息作为辅助信息,以Key-Value的方式保存到JNode中
 Bean反序列化时,会根据JNode中的引用类型的类的辅助信息,来决定使用具体的类来进行反序列化绑定。
 
-## 默认Bean反序列化约束
+## 无参构造Bean反序列化定制
+#### 无参构造Bean实例化
 `JVM unsafe mechanism`机制无需依赖构造器的方式实例化对象,然后在对Bean对象进行属性设置
 ```java
 public class UnsafeAllocator {
@@ -44,10 +46,76 @@ public class UnsafeAllocator {
 }
 ```
 
+#### 重写BeanDeserializer.deserializeFromObjectUsingNonDefault
 
+```java
 
+    @Override
+    public Object deserializeFromObjectUsingNonDefault(JsonParser p,DeserializationContext ctxt) throws IOException{
+        JsonDeserializer<Object> delegateDeser = _delegateDeserializer;
+        if (delegateDeser == null) {
+            delegateDeser = _arrayDelegateDeserializer;
+        }
+        if (delegateDeser != null) {
+            return _valueInstantiator.createUsingDelegate(ctxt,
+                    delegateDeser.deserialize(p, ctxt));
+        }
+        if (_propertyBasedCreator != null) {
+            return _deserializeUsingPropertyBased(p, ctxt);
+        }
+
+       /*
+        // 25-Jan-2017, tatu: We do not actually support use of Creators for non-static
+        //   inner classes -- with one and only one exception; that of default constructor!
+        //   -- so let's indicate it
+       //=== Unsafe Allocator support Bean instantiate with Non default creator,Include the non-static inner class =====
+       Class<?> raw = _beanType.getRawClass();
+        if (ClassUtil.isNonStaticInnerClass(raw)) {
+            return ctxt.handleMissingInstantiator(raw, null, p,
+                    "can only instantiate non-static inner class by using default, no-argument constructor");
+        }*/
+        return _deserializeNonDefaultWithUnsafeAllocator(p,ctxt);
+    }
+    
+    private void fillBeanFieldValue(JsonParser p, DeserializationContext ctxt, Object bean) throws IOException {
+        p.setCurrentValue(bean);
+        if (p.hasTokenId(JsonTokenId.ID_FIELD_NAME)) {
+            String propName = p.getCurrentName();
+            do {
+                p.nextToken();
+                SettableBeanProperty prop = _beanProperties.find(propName);
+                if (prop != null) { // normal case
+                    try {
+                        prop.deserializeAndSet(p, ctxt, bean);
+                    } catch (Exception e) {
+                        wrapAndThrow(e, bean, propName, ctxt);
+                    }
+                    continue;
+                }
+                handleUnknownVanilla(p, ctxt, bean, propName);
+            } while ((propName = p.nextFieldName()) != null);
+        }
+    }
+    
+```
+
+#### SimpleModule集成
+
+```java
+public class MyBeanDeserializerModifier  extends BeanDeserializerModifier {
+    @Override
+    public JsonDeserializer<?> modifyDeserializer(DeserializationConfig config, BeanDescription beanDesc, JsonDeserializer<?> deserializer) {
+        //replace default BeanDeserializer to support instantiate bean with Non-default creator.
+        if (deserializer instanceof BeanDeserializer) {
+            return new MyBeanDeserializer((BeanDeserializer) deserializer);
+        }
+        return deserializer;
+    }
+}
+```
 
 ## Maven
+
 
 ```xml
 <properties>
