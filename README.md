@@ -22,7 +22,27 @@ Bean反序列化时,会根据JNode中的引用类型的类的辅助信息,来决
 
 ## 默认Bean反序列化约束
 `JVM unsafe mechanism`机制无需依赖构造器的方式实例化对象,然后在对Bean对象进行属性设置
-
+```java
+public class UnsafeAllocator {
+    private static Unsafe unsafe;
+    static{
+        try {
+            Class<?> unsafeClass = Class.forName("sun.misc.Unsafe");
+            Field f = unsafeClass.getDeclaredField("theUnsafe");
+            f.setAccessible(true);
+            unsafe = (Unsafe) f.get(null);
+        } catch (Exception ignored) {
+            ignored.printStackTrace();
+        }
+    }
+    public static Object beanAllocatorByJvmUnsafe(Class<?> clazz) throws InstantiationException {
+        if(unsafe==null){
+            throw new InstantiationException(String.format("Jvm Unsafe could't find,Make sure load unsafe security in [%s]",clazz.getName()));
+        }
+        return unsafe.allocateInstance(clazz);
+    }
+}
+```
 
 
 
